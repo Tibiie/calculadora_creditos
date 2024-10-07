@@ -93,13 +93,13 @@ class _Form extends StatelessWidget {
                   labelText: 'Número de Cuotas',
                   prefixIcon: Icons.payment,
                 ),
-                value: [12, 15, 24].contains(calProvider.cuotas)
+                value: [12, 15, 20].contains(calProvider.cuotas)
                     ? calProvider.cuotas
                     : null,
                 items: const [
                   DropdownMenuItem(value: 12, child: Text('12 cuotas')),
                   DropdownMenuItem(value: 15, child: Text('15 cuotas')),
-                  DropdownMenuItem(value: 24, child: Text('24 cuotas')),
+                  DropdownMenuItem(value: 20, child: Text('20 cuotas')),
                 ],
                 onChanged: (value) {
                   calProvider.cuotas = value ?? 0;
