@@ -1,7 +1,9 @@
+import 'package:calculadora_creditos/providers/calculadora_provider.dart';
 import 'package:calculadora_creditos/widgets/background.dart';
 import 'package:calculadora_creditos/widgets/card_container.dart';
 import 'package:calculadora_creditos/widgets/custom_input.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CalculadoraScreen extends StatelessWidget {
   const CalculadoraScreen({Key? key}) : super(key: key);
@@ -31,7 +33,10 @@ class CalculadoraScreen extends StatelessWidget {
                 const SizedBox(
                   height: 30,
                 ),
-                const _Form()
+                ChangeNotifierProvider(
+                  create: (context) => CalculadoraProvider(),
+                  child: const _Form(),
+                ),
               ],
             )),
             const SizedBox(
@@ -52,9 +57,11 @@ class _Form extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final calProvider = Provider.of<CalculadoraProvider>(context);
+
     return Container(
       child: Form(
-          key: key,
+          key: calProvider.formKey,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Column(
             children: [
@@ -62,37 +69,47 @@ class _Form extends StatelessWidget {
                 autocorrect: false,
                 keyboardType: TextInputType.number,
                 decoration: Custominput.authInputDecoracion(
-                  hintText: '100000',
+                  hintText: 'Escriba el valor',
                   labelText: 'Valor del Producto',
                   prefixIcon: Icons.attach_money,
                 ),
-                // onChanged: ( value ) => loginForm.email = value,
-                // validator: ( value )  {
-                //   String pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                //   RegExp regExp  = RegExp(pattern);
-
-                //   return regExp.hasMatch(value ?? '')
-                //     ? null
-                //     : 'El valor ingresado no es un correo';
-                // },
+                onChanged: (value) {
+                  calProvider.valor = int.tryParse(value) ?? 0;
+                },
+                validator: (value) {
+                  final intValue = int.tryParse(value ?? '');
+                  if (intValue != null && intValue > 0) {
+                    return null;
+                  }
+                  return 'Escriba el valor de producto';
+                },
               ),
               const SizedBox(
                 height: 30,
               ),
-              TextFormField(
-                autocorrect: false,
-                obscureText: true,
-                keyboardType: TextInputType.number,
+              DropdownButtonFormField<int>(
                 decoration: Custominput.authInputDecoracion(
-                  hintText: 'Número de Cuotas',
-                  labelText: '12',
+                  hintText: 'Seleccione el número de cuotas',
+                  labelText: 'Número de Cuotas',
                   prefixIcon: Icons.payment,
                 ),
-                // onChanged: ( value ) => loginForm.password = value,
-                // validator: ( value )  {
-                //   if ( value != null && value.length >= 6 ) return null;
-                //   return 'La contraseña debe de tener minimo 6 caracteres';
-                // },
+                value: [12, 15, 24].contains(calProvider.cuotas)
+                    ? calProvider.cuotas
+                    : null,
+                items: const [
+                  DropdownMenuItem(value: 12, child: Text('12 cuotas')),
+                  DropdownMenuItem(value: 15, child: Text('15 cuotas')),
+                  DropdownMenuItem(value: 24, child: Text('24 cuotas')),
+                ],
+                onChanged: (value) {
+                  calProvider.cuotas = value ?? 0;
+                },
+                validator: (value) {
+                  if (value != null && value > 0) {
+                    return null;
+                  }
+                  return 'Seleccione el número de cuotas';
+                },
               ),
               const SizedBox(
                 height: 30,
@@ -103,23 +120,21 @@ class _Form extends StatelessWidget {
                   disabledColor: Colors.grey,
                   elevation: 0,
                   color: const Color.fromARGB(255, 149, 10, 0),
-                  // onPressed: loginForm.isLoading ? null : () async {
+                  onPressed: calProvider.isLoading
+                      ? null
+                      : () async {
+                          FocusScope.of(context).unfocus();
 
-                  //   FocusScope.of(context).unfocus();
+                          if (!calProvider.isValidForm()) return;
 
-                  //   if(!loginForm.isValidForm()) return;
+                          calProvider.isLoading = true;
 
-                  //   loginForm.isLoading = true;
+                          await Future.delayed(const Duration(seconds: 2));
 
-                  //   await Future.delayed(Duration(seconds: 2));
+                          calProvider.isLoading = false;
 
-                  //   loginForm.isLoading = false;
-
-                  //   Navigator.pushReplacementNamed(context, 'home');
-                  // },
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(context, 'home');
-                  },
+                          print("Formulario validado");
+                        },
                   child: Container(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 80, vertical: 15),
