@@ -1,3 +1,4 @@
+import 'package:calculadora_creditos/models/ResultadoCalculoCuotas.dart';
 import 'package:calculadora_creditos/models/cuota.dart';
 import 'package:flutter/material.dart';
 
@@ -20,8 +21,10 @@ class CalculadoraProvider extends ChangeNotifier {
   }
 
   // Método para calcular las cuotas (colócalo en tu Provider o en otro lugar)
-  List<Cuota> calcularCuotas(int total, int cuotas) {
+  ResultadoCalculoCuotas calcularCuotas(int total, int cuotas) {
     List<Cuota> listaCuotas = [];
+
+    double valorFinanciado = 0;
 
     double porcentaje = 0;
 
@@ -29,12 +32,12 @@ class CalculadoraProvider extends ChangeNotifier {
       porcentaje = 0.66;
     } else if (cuotas == 15) {
       porcentaje = 0.55;
-    } else if (cuotas == 24) {
+    } else if (cuotas == 20) {
       porcentaje = 0.5;
     }
 
     // Calcular el valor financiado
-    double valorFinanciado = total / porcentaje;
+    valorFinanciado = total / porcentaje;
 
     // Calcular el valor de cada cuota
     double valorCuota = valorFinanciado / cuotas;
@@ -44,6 +47,7 @@ class CalculadoraProvider extends ChangeNotifier {
       listaCuotas.add(Cuota(numeroCuotas: i, valorCuota: valorCuota));
     }
 
-    return listaCuotas;
+    return ResultadoCalculoCuotas(
+        cuotas: listaCuotas, valorFinanciado: valorFinanciado);
   }
 }

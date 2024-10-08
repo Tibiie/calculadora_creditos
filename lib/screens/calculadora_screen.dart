@@ -1,4 +1,5 @@
 import 'package:calculadora_creditos/providers/calculadora_provider.dart';
+import 'package:calculadora_creditos/screens/tabla_cuotas_screen.dart';
 import 'package:calculadora_creditos/widgets/background.dart';
 import 'package:calculadora_creditos/widgets/card_container.dart';
 import 'package:calculadora_creditos/widgets/custom_input.dart';
@@ -129,11 +130,20 @@ class _Form extends StatelessWidget {
 
                           calProvider.isLoading = true;
 
-                          await Future.delayed(const Duration(seconds: 2));
+                          final resultado = calProvider.calcularCuotas(
+                              calProvider.valor, calProvider.cuotas);
+
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => TablaCuotasScreen(
+                                cuotas: resultado.cuotas,
+                                valorFinanciado: resultado.valorFinanciado,
+                              ),
+                            ),
+                          );
 
                           calProvider.isLoading = false;
-
-                          print("Formulario validado");
                         },
                   child: Container(
                     padding: const EdgeInsets.symmetric(
