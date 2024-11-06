@@ -29,7 +29,7 @@ class CalculadoraProvider extends ChangeNotifier {
     double porcentaje = 0;
 
     if (cuotas == 12) {
-      porcentaje = 0.66;
+      porcentaje = 0.64;
     } else if (cuotas == 15) {
       porcentaje = 0.55;
     } else if (cuotas == 20) {
