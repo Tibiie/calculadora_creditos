@@ -1,5 +1,4 @@
 import 'package:calculadora_creditos/providers/calculadora_provider.dart';
-import 'package:calculadora_creditos/screens/tabla_cuotas_screen.dart';
 import 'package:calculadora_creditos/widgets/background.dart';
 import 'package:calculadora_creditos/widgets/card_container.dart';
 import 'package:calculadora_creditos/widgets/custom_input.dart';
