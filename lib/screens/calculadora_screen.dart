@@ -93,19 +93,19 @@ class _Form extends StatelessWidget {
                 labelText: 'Producto',
                 prefixIcon: Icons.shopping_cart,
               ),
-              value: [12, 15, 20].contains(calProvider.cuotas)
-                  ? calProvider.cuotas
+              value: [1, 2, 3, 4, 5, 6].contains(calProvider.producto)
+                  ? calProvider.producto
                   : null,
               items: const [
-                DropdownMenuItem(value: 12, child: Text('Tenis triple AAA')),
-                DropdownMenuItem(value: 15, child: Text('Tenis 1,1')),
-                DropdownMenuItem(value: 20, child: Text('Tenis nacionales')),
-                DropdownMenuItem(value: 20, child: Text('Ropa nacional')),
-                DropdownMenuItem(value: 20, child: Text('Ropa triple AAA')),
-                DropdownMenuItem(value: 20, child: Text('Ropa 1,1')),
+                DropdownMenuItem(value: 1, child: Text('Tenis triple AAA')),
+                DropdownMenuItem(value: 2, child: Text('Tenis 1,1')),
+                DropdownMenuItem(value: 3, child: Text('Tenis nacionales')),
+                DropdownMenuItem(value: 4, child: Text('Ropa nacional')),
+                DropdownMenuItem(value: 5, child: Text('Ropa triple AAA')),
+                DropdownMenuItem(value: 6, child: Text('Ropa 1,1')),
               ],
               onChanged: (value) {
-                calProvider.cuotas = value ?? 0;
+                calProvider.producto = value ?? 0;
               },
               validator: (value) {
                 if (value != null && value > 0) {
@@ -123,15 +123,15 @@ class _Form extends StatelessWidget {
                 labelText: 'Tipo venta',
                 prefixIcon: Icons.shopping_bag,
               ),
-              value: [12, 15, 20].contains(calProvider.cuotas)
-                  ? calProvider.cuotas
+              value: [1, 2].contains(calProvider.tipoVenta)
+                  ? calProvider.tipoVenta
                   : null,
               items: const [
-                DropdownMenuItem(value: 12, child: Text('Contado')),
-                DropdownMenuItem(value: 15, child: Text('Credito')),
+                DropdownMenuItem(value: 1, child: Text('Contado')),
+                DropdownMenuItem(value: 2, child: Text('Credito')),
               ],
               onChanged: (value) {
-                calProvider.cuotas = value ?? 0;
+                calProvider.tipoVenta = value ?? 0;
               },
               validator: (value) {
                 if (value != null && value > 0) {
@@ -143,6 +143,26 @@ class _Form extends StatelessWidget {
             const SizedBox(
               height: 30,
             ),
+            if (calProvider.flete == true)
+              TextFormField(
+                autocorrect: false,
+                keyboardType: TextInputType.number,
+                decoration: Custominput.authInputDecoracion(
+                  hintText: 'Escriba el valor',
+                  labelText: 'Valor del Flete',
+                  prefixIcon: Icons.local_shipping,
+                ),
+                onChanged: (value) {
+                  calProvider.valorFlete = int.tryParse(value) ?? 0;
+                },
+                validator: (value) {
+                  final intValue = int.tryParse(value ?? '');
+                  if (intValue != null && intValue > 0) {
+                    return null;
+                  }
+                  return 'Escriba el valor del flete';
+                },
+              ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -150,8 +170,10 @@ class _Form extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Checkbox(
-                      value: true,
-                      onChanged: (value) {},
+                      value: calProvider.flete ?? false,
+                      onChanged: (bool? value) {
+                        calProvider.toggleFlete(value);
+                      },
                       activeColor: const Color.fromARGB(255, 40, 89, 135),
                     ),
                     const Text('Flete'),
@@ -162,8 +184,10 @@ class _Form extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Checkbox(
-                      value: false,
-                      onChanged: (value) {},
+                      value: calProvider.descuento ?? false,
+                      onChanged: (bool? value) {
+                        calProvider.toggleDescuento(value);
+                      },
                       activeColor: const Color.fromARGB(255, 40, 89, 135),
                     ),
                     const Text('Descuento'),
@@ -180,30 +204,31 @@ class _Form extends StatelessWidget {
                 disabledColor: Colors.grey,
                 elevation: 0,
                 color: const Color.fromARGB(255, 40, 89, 135),
-                onPressed: calProvider.isLoading
-                    ? null
-                    : () async {
-                        FocusScope.of(context).unfocus();
+                onPressed: null,
+                // onPressed: calProvider.isLoading
+                //     ? null
+                //     : () async {
+                //         FocusScope.of(context).unfocus();
 
-                        if (!calProvider.isValidForm()) return;
+                //         if (!calProvider.isValidForm()) return;
 
-                        calProvider.isLoading = true;
+                //         calProvider.isLoading = true;
 
-                        final resultado = calProvider.calcularCuotas(
-                            calProvider.valor, calProvider.cuotas);
+                //         final resultado = calProvider.calcularCuotas(
+                //             calProvider.valor, calProvider.cuotas);
 
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => TablaCuotasScreen(
-                              cuotas: resultado.cuotas,
-                              valorFinanciado: resultado.valorFinanciado,
-                            ),
-                          ),
-                        );
+                //         await Navigator.push(
+                //           context,
+                //           MaterialPageRoute(
+                //             builder: (context) => TablaCuotasScreen(
+                //               cuotas: resultado.cuotas,
+                //               valorFinanciado: resultado.valorFinanciado,
+                //             ),
+                //           ),
+                //         );
 
-                        calProvider.isLoading = false;
-                      },
+                //         calProvider.isLoading = false;
+                //       },
                 child: Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 80, vertical: 15),

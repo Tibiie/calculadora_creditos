@@ -6,7 +6,11 @@ class CalculadoraProvider extends ChangeNotifier {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   int valor = 0;
-  int cuotas = 0;
+  int producto = 0;
+  int tipoVenta = 0;
+  bool? flete = false;
+  int? valorFlete = 0;
+  bool? descuento = false;
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -18,6 +22,16 @@ class CalculadoraProvider extends ChangeNotifier {
 
   bool isValidForm() {
     return formKey.currentState?.validate() ?? false;
+  }
+
+  void toggleFlete(bool? value) {
+    flete = value;
+    notifyListeners();
+  }
+
+  void toggleDescuento(bool? value) {
+    descuento = value;
+    notifyListeners();
   }
 
   // Método para calcular las cuotas (colócalo en tu Provider o en otro lugar)
