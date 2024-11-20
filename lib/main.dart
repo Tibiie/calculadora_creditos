@@ -27,9 +27,9 @@ class MyApp extends StatelessWidget {
           appBarTheme: const AppBarTheme(
               elevation: 0,
               centerTitle: true,
-              color: Color.fromARGB(255, 149, 10, 0)),
+              color: Color.fromARGB(255, 40, 89, 135)),
           floatingActionButtonTheme: const FloatingActionButtonThemeData(
-              backgroundColor: Color.fromARGB(255, 149, 10, 0), elevation: 0)),
+              backgroundColor: Color.fromARGB(255, 40, 89, 135), elevation: 0)),
     );
   }
 }

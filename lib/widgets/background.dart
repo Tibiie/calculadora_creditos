@@ -28,12 +28,12 @@ class _HeaderIcon extends StatelessWidget {
       child: Container(
         width: double.infinity,
         margin: const EdgeInsets.only(top: 30),
-        child: Image.asset(
-          'assets/images/Logo.png',
-          width: 220,
-          height: 220,
-          fit: BoxFit.contain,
-        ),
+        // child: Image.asset(
+        //   'assets/images/Logo.png',
+        //   width: 220,
+        //   height: 220,
+        //   fit: BoxFit.contain,
+        // ),
       ),
     );
   }
@@ -49,7 +49,7 @@ class _Caja extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: size.height * 0.4,
-      decoration: _redBackground(),
+      decoration: _blueBackground(),
       child: Stack(
         children: [
           Positioned(
@@ -82,11 +82,14 @@ class _Caja extends StatelessWidget {
     );
   }
 
-  BoxDecoration _redBackground() => const BoxDecoration(
-          gradient: LinearGradient(colors: [
-        Color.fromRGBO(156, 63, 63, 1),
-        Color.fromRGBO(178, 70, 70, 1),
-      ]));
+  BoxDecoration _blueBackground() => const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Color.fromARGB(255, 30, 75, 115), // Un poco más oscuro
+            Color.fromARGB(255, 50, 100, 150), // Un poco más claro
+          ],
+        ),
+      );
 }
 
 class _Bubble extends StatelessWidget {
