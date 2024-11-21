@@ -4,7 +4,7 @@ FROM dart:stable AS build
 WORKDIR /usr/src/app
 
 # Instalar Flutter SDK
-RUN RUN git clone https://github.com/flutter/flutter.git/usr/local/flutter
+RUN git clone https://github.com/flutter/flutter.git/usr/local/flutter
 
 # Establecer las rutas de Flutter
 ENV PATH="/usr/src/app/flutter/bin:/usr/src/app/flutter/bin/cache/dart-sdk/bin:${PATH}"
