@@ -10,8 +10,8 @@ RUN apt-get update && apt-get install -y \
     unzip \
     xz-utils \
     && curl -LO https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.24.3-stable.tar.xz.intoto.jsonl \
-    && tar xf flutter_linux_3.7.6-stable.tar.xz \
-    && rm flutter_linux_3.7.6-stable.tar.xz
+    && tar xf flutter_linux_3.24.3-stable.tar.xz \
+    && rm flutter_linux_3.24.3-stable.tar.xz
 
 # Establecer las rutas de Flutter
 ENV PATH="/usr/src/app/flutter/bin:/usr/src/app/flutter/bin/cache/dart-sdk/bin:${PATH}"
