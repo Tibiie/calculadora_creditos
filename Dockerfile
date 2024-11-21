@@ -4,14 +4,7 @@ FROM dart:stable AS build
 WORKDIR /usr/src/app
 
 # Instalar Flutter SDK
-RUN apt-get update && apt-get install -y \
-    curl \
-    git \
-    unzip \
-    xz-utils \
-    && curl -LO https://storage.googleapis.com/download.flutter.dev/flutter_linux_3.24.3-stable.tar.xz \
-    && tar xf flutter_linux_3.24.3-stable.tar.xz \
-    && rm flutter_linux_3.24.3-stable.tar.xz
+RUN RUN git clone https://github.com/flutter/flutter.git/usr/local/flutter
 
 # Establecer las rutas de Flutter
 ENV PATH="/usr/src/app/flutter/bin:/usr/src/app/flutter/bin/cache/dart-sdk/bin:${PATH}"
