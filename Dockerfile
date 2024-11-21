@@ -23,7 +23,7 @@ FROM nginx:alpine
 
 # Copiar los archivos generados por Flutter a la carpeta de Nginx
 COPY --from=build /usr/src/app/build/web /usr/share/nginx/html
-COPY --from=build /usr/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /usr/src/app/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copiar configuración personalizada de Nginx (si tienes)
 # COPY nginx.conf /etc/nginx/nginx.conf
