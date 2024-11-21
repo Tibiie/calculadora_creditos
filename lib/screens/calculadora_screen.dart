@@ -3,6 +3,7 @@ import 'package:calculadora_creditos/widgets/background.dart';
 import 'package:calculadora_creditos/widgets/card_container.dart';
 import 'package:calculadora_creditos/widgets/custom_input.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class CalculadoraScreen extends StatelessWidget {
@@ -73,7 +74,9 @@ class _Form extends StatelessWidget {
                 prefixIcon: Icons.attach_money,
               ),
               onChanged: (value) {
-                calProvider.valor = int.tryParse(value) ?? 0;
+                calProvider.valorOriginal =
+                    (int.tryParse(value) ?? 0).toDouble();
+                calProvider.resultadoFInal = 0;
               },
               validator: (value) {
                 final intValue = int.tryParse(value ?? '');
@@ -92,7 +95,7 @@ class _Form extends StatelessWidget {
                 labelText: 'Producto',
                 prefixIcon: Icons.shopping_cart,
               ),
-              value: [1, 2, 3, 4, 5, 6].contains(calProvider.producto)
+              value: [1, 2].contains(calProvider.producto)
                   ? calProvider.producto
                   : null,
               items: const [
@@ -105,6 +108,7 @@ class _Form extends StatelessWidget {
               ],
               onChanged: (value) {
                 calProvider.producto = value ?? 0;
+                calProvider.resultadoFInal = 0;
               },
               validator: (value) {
                 if (value != null && value > 0) {
@@ -131,6 +135,7 @@ class _Form extends StatelessWidget {
               ],
               onChanged: (value) {
                 calProvider.tipoVenta = value ?? 0;
+                calProvider.resultadoFInal = 0;
               },
               validator: (value) {
                 if (value != null && value > 0) {
@@ -152,7 +157,9 @@ class _Form extends StatelessWidget {
                   prefixIcon: Icons.local_shipping,
                 ),
                 onChanged: (value) {
-                  calProvider.valorFlete = int.tryParse(value) ?? 0;
+                  calProvider.valorFlete =
+                      (int.tryParse(value) ?? 0).toDouble();
+                  calProvider.resultadoFInal = 0;
                 },
                 validator: (value) {
                   final intValue = int.tryParse(value ?? '');
@@ -172,6 +179,7 @@ class _Form extends StatelessWidget {
                       value: calProvider.flete ?? false,
                       onChanged: (bool? value) {
                         calProvider.toggleFlete(value);
+                        calProvider.resultadoFInal = 0;
                       },
                       activeColor: const Color.fromARGB(255, 40, 89, 135),
                     ),
@@ -186,6 +194,7 @@ class _Form extends StatelessWidget {
                       value: calProvider.descuento ?? false,
                       onChanged: (bool? value) {
                         calProvider.toggleDescuento(value);
+                        calProvider.resultadoFInal = 0;
                       },
                       activeColor: const Color.fromARGB(255, 40, 89, 135),
                     ),
@@ -203,31 +212,29 @@ class _Form extends StatelessWidget {
                 disabledColor: Colors.grey,
                 elevation: 0,
                 color: const Color.fromARGB(255, 40, 89, 135),
-                onPressed: null,
-                // onPressed: calProvider.isLoading
-                //     ? null
-                //     : () async {
-                //         FocusScope.of(context).unfocus();
+                onPressed: calProvider.isLoading
+                    ? null
+                    : () async {
+                        FocusScope.of(context).unfocus();
 
-                //         if (!calProvider.isValidForm()) return;
+                        if (!calProvider.isValidForm()) return;
 
-                //         calProvider.isLoading = true;
+                        calProvider.isLoading = true;
 
-                //         final resultado = calProvider.calcularCuotas(
-                //             calProvider.valor, calProvider.cuotas);
+                        calProvider.calcularValorFinal();
 
-                //         await Navigator.push(
-                //           context,
-                //           MaterialPageRoute(
-                //             builder: (context) => TablaCuotasScreen(
-                //               cuotas: resultado.cuotas,
-                //               valorFinanciado: resultado.valorFinanciado,
-                //             ),
-                //           ),
-                //         );
+                        //         await Navigator.push(
+                        //           context,
+                        //           MaterialPageRoute(
+                        //             builder: (context) => TablaCuotasScreen(
+                        //               cuotas: resultado.cuotas,
+                        //               valorFinanciado: resultado.valorFinanciado,
+                        //             ),
+                        //           ),
+                        //         );
 
-                //         calProvider.isLoading = false;
-                //       },
+                        calProvider.isLoading = false;
+                      },
                 child: Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
@@ -235,7 +242,38 @@ class _Form extends StatelessWidget {
                     'Calcular',
                     style: TextStyle(color: Colors.white),
                   ),
-                ))
+                )),
+            const SizedBox(
+              height: 30,
+            ),
+            Column(
+              children: [
+                Column(
+                  children: [
+                    const Text(
+                      'Resultado Final',
+                      style: TextStyle(
+                        fontSize:
+                            18, // Un tamaño de fuente más pequeño para el título
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black, // Color para el título
+                      ),
+                    ),
+                    const SizedBox(
+                        height: 8), // Espacio entre el título y el valor
+                    Text(
+                      '\$${NumberFormat("#,##0", "en_US").format(calProvider.resultadoFInal)}',
+                      style: const TextStyle(
+                        fontSize: 24, // Tamaño más grande para el valor
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green, // Color verde para el valor
+                        letterSpacing: 1.5, // Espaciado entre letras
+                      ),
+                    )
+                  ],
+                ),
+              ],
+            ),
           ],
         ));
   }

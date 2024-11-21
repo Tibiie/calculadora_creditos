@@ -3,17 +3,16 @@ import 'package:flutter/material.dart';
 class CalculadoraProvider extends ChangeNotifier {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  int valor = 0;
+  double valorOriginal = 0;
   int producto = 0;
   int tipoVenta = 0;
   bool? flete = false;
-  int? valorFlete = 0;
+  double? valorFlete = 0;
   bool? descuento = false;
+  double resultadoFInal = 0;
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
-
-  int resultadoFInal = 0;
 
   set isLoading(bool value) {
     _isLoading = value;
@@ -34,15 +33,99 @@ class CalculadoraProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  int calcularValorFinal(
-      int valorProducto, int producto, int tipoVenta, int flete) {
-    switch (producto) {
-      case 1:
-        break;
-      default:
+  calcularValorFinal() {
+    double porcentajeVenta = 0;
+    double valor = 0;
+
+    valor = valorOriginal;
+
+    if (flete == true) {
+      valor = valor + valorFlete!;
+      print(valor);
     }
 
-    return 0;
+    switch (producto) {
+      case 1:
+        if (tipoVenta == 1) {
+          porcentajeVenta = 0.7;
+          resultadoFInal = valor / porcentajeVenta;
+        } else {
+          porcentajeVenta = 0.55;
+          if (descuento == true) {
+            resultadoFInal = valor / (porcentajeVenta + 0.05);
+          } else {
+            resultadoFInal = valor / (porcentajeVenta);
+          }
+        }
+        break;
+      case 2:
+        if (tipoVenta == 1) {
+          porcentajeVenta = 0.7;
+          resultadoFInal = valor / porcentajeVenta;
+        } else {
+          porcentajeVenta = 0.55;
+          if (descuento == true) {
+            resultadoFInal = valor / (porcentajeVenta + 0.05);
+          } else {
+            resultadoFInal = valor / (porcentajeVenta);
+          }
+        }
+        break;
+      case 3:
+        if (tipoVenta == 1) {
+          porcentajeVenta = 0.75;
+          resultadoFInal = valor / porcentajeVenta;
+        } else {
+          porcentajeVenta = 0.6;
+          if (descuento == true) {
+            resultadoFInal = valor / (porcentajeVenta + 0.05);
+          } else {
+            resultadoFInal = valor / (porcentajeVenta);
+          }
+        }
+        break;
+      case 4:
+        if (tipoVenta == 1) {
+          porcentajeVenta = 0.75;
+          resultadoFInal = valor / porcentajeVenta;
+        } else {
+          porcentajeVenta = 0.6;
+          if (descuento == true) {
+            resultadoFInal = valor / (porcentajeVenta + 0.05);
+          } else {
+            resultadoFInal = valor / (porcentajeVenta);
+          }
+        }
+        break;
+      case 5:
+        if (tipoVenta == 1) {
+          porcentajeVenta = 0.7;
+          resultadoFInal = valor / porcentajeVenta;
+        } else {
+          porcentajeVenta = 0.55;
+          if (descuento == true) {
+            resultadoFInal = valor / (porcentajeVenta + 0.05);
+          } else {
+            resultadoFInal = valor / (porcentajeVenta);
+          }
+        }
+        break;
+      case 6:
+        if (tipoVenta == 1) {
+          porcentajeVenta = 0.7;
+          resultadoFInal = valor / porcentajeVenta;
+        } else {
+          porcentajeVenta = 0.55;
+          if (descuento == true) {
+            resultadoFInal = valor / (porcentajeVenta + 0.05);
+          } else {
+            resultadoFInal = valor / (porcentajeVenta);
+          }
+        }
+        break;
+
+      default:
+    }
   }
 
   // // Método para calcular las cuotas (colócalo en tu Provider o en otro lugar)
