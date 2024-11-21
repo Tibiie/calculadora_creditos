@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y \
     git \
     unzip \
     xz-utils \
-    && curl -LO https://storage.googleapis.com/download.flutter.dev/flutter_linux_3.7.6-stable.tar.xz \
+    && curl -LO https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.24.3-stable.tar.xz.intoto.jsonl \
     && tar xf flutter_linux_3.7.6-stable.tar.xz \
     && rm flutter_linux_3.7.6-stable.tar.xz
 
